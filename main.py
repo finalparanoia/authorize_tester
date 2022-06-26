@@ -74,7 +74,7 @@ class Tester:
 
 
 if __name__ == '__main__':
-    t = Tester("http://localhost:8080")
+    t = Tester("http://192.168.2.146:8080")
     # 生成用户名密码
     usr = token_hex()
     pwd = token_hex()
@@ -98,9 +98,8 @@ if __name__ == '__main__':
     print("撤销单个令牌，服务器返还: {}\n".format(s_c))
     # 获取令牌
     c = 0
-    resp_list = []
     while True:
-        resp = t.login(n_uid, pwd)
+        tmp = t.login(n_uid, pwd)
         print("{}. 临时UID: {}\n   授权码: {}".format(c, tmp["tmp_uid"], tmp["token"]))
         c += 1
         if c > 5:
@@ -109,6 +108,6 @@ if __name__ == '__main__':
     # 注销全部令牌
     s_c = t.revoke_all(n_uid, pwd)
     print("撤销全部令牌，服务器返还: {}\n".format(s_c))
-    resp = t.delete(n_uid, pwd)
-    print("删除账号，服务器返还: {}\n".format(resp))
+    s_c = t.delete(n_uid, pwd)
+    print("删除账号，服务器返还: {}\n".format(s_c))
     # pause()
