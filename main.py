@@ -109,4 +109,6 @@ if __name__ == '__main__':
     # 注销全部令牌
     s_c = t.revoke_all(n_uid, pwd)
     print("撤销全部令牌，服务器返还: {}\n".format(s_c))
+    resp = t.delete(n_uid, pwd)
+    print("删除账号，服务器返还: {}\n".format(resp))
     # pause()
