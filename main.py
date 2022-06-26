@@ -1,7 +1,10 @@
 from json import loads, dumps
 from requests import session, Response
-from os import system
 from secrets import token_hex
+
+
+def pause():
+    input("请按任意键继续...")
 
 
 class UniClient:
@@ -75,25 +78,35 @@ if __name__ == '__main__':
     # 生成用户名密码
     usr = token_hex()
     pwd = token_hex()
+    print("生成随机的用户名和密码\n用户名: {}\n密码: {}\n".format(usr, pwd))
     # 注册
     n_uid = t.register(usr, pwd)
-    system("pause")
+    print("注册\n获得UID: {}\n".format(n_uid))
+    # pause()
     # 获取令牌
     tmp = t.login(n_uid, pwd)
     # 解析令牌
     t_uid = tmp["tmp_uid"]
     tok = tmp["token"]
-    system("pause")
+    print("获取并解析临时UID和授权码\n临时UID: {}\n授权码: {}\n".format(t_uid, tok))
+    # pause()
     # 验证令牌
-    t.auth_token(t_uid, tok)
+    s_c = t.auth_token(t_uid, tok)
+    print("验证令牌，服务器返还: {}\n".format(s_c))
     # 注销单个令牌
-    t.revoke_one(t_uid, tok)
+    s_c = t.revoke_one(t_uid, tok)
+    print("撤销单个令牌，服务器返还: {}\n".format(s_c))
     # 获取令牌
-    t.login(n_uid, pwd)
-    t.login(n_uid, pwd)
-    t.login(n_uid, pwd)
-    t.login(n_uid, pwd)
-    system("pause")
+    c = 0
+    resp_list = []
+    while True:
+        resp = t.login(n_uid, pwd)
+        print("{}. 临时UID: {}\n   授权码: {}".format(c, tmp["tmp_uid"], tmp["token"]))
+        c += 1
+        if c > 5:
+            break
+    # pause()
     # 注销全部令牌
-    t.revoke_all(n_uid, pwd)
-    system("pause")
+    s_c = t.revoke_all(n_uid, pwd)
+    print("撤销全部令牌，服务器返还: {}\n".format(s_c))
+    # pause()
